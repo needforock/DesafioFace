@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import com.desafiolatam.desafioface.R;
 import com.desafiolatam.desafioface.background.RecentUserService;
+import com.desafiolatam.desafioface.data.FcmToken;
+import com.desafiolatam.desafioface.network.favorites.PutFcmToken;
 import com.desafiolatam.desafioface.views.main.MainActivity;
 
 /**
@@ -104,6 +106,8 @@ public class LoginActivity extends AppCompatActivity implements SessionCallback 
 
     @Override
     public void success() {
+        String fcmToken = new FcmToken(this).get();
+        new PutFcmToken().execute(fcmToken);
         RecentUserService.startActionRecentUsers(this);
 
     }

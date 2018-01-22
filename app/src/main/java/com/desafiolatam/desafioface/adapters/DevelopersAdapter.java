@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.desafiolatam.desafioface.R;
 import com.desafiolatam.desafioface.data.DevelopersQueries;
 import com.desafiolatam.desafioface.models.Developer;
+import com.desafiolatam.desafioface.network.favorites.PostFavorite;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -72,7 +74,9 @@ public class DevelopersAdapter extends RecyclerView.Adapter<DevelopersAdapter.Vi
         holder.poke.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO trigger push notification
+                long id = developers.get(holder.getAdapterPosition()).getServer_id();
+                Log.d("TOKEN", String.valueOf(id));
+                new PostFavorite().execute(id);
             }
         });
     }

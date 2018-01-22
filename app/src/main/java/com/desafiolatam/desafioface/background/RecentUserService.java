@@ -46,17 +46,19 @@ public class RecentUserService extends IntentService {
     private void fetchUsers() {
         Map<String,String> queryMap = new HashMap<>();
         queryMap.put("page", "1");
-        new fetchUsers(3).execute(queryMap);
+        new fetchUsers(3, this).execute(queryMap);
     }
 
     private class fetchUsers extends GetUsers{
 
-        public fetchUsers(int additionalPages) {
-            super(additionalPages);
+
+        public fetchUsers(int additionalPages, Context context) {
+            super(additionalPages, context);
         }
 
         @Override
         protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
             Log.d("RESULTS", String.valueOf(integer));
             Intent intent = new Intent();
             intent.setAction(USERS_FINISHED);

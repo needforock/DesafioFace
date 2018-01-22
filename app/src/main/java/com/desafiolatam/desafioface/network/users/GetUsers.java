@@ -1,8 +1,12 @@
 package com.desafiolatam.desafioface.network.users;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.desafiolatam.desafioface.app.DesafioApp;
 import com.desafiolatam.desafioface.models.Developer;
 
 import java.io.IOException;
@@ -22,10 +26,12 @@ public class GetUsers extends AsyncTask<Map<String, String>, Integer, Integer> {
     private Map<String, String> queryMap;
     private int result;
     private final Users request = new UserInterceptor().get();
+    private final Context context;
 
 
-    public GetUsers(int additionalPages) {
+    public GetUsers(int additionalPages, Context context) {
         this.additionalPages = additionalPages;
+        this.context = context;
     }
 
     @Override
@@ -43,7 +49,15 @@ public class GetUsers extends AsyncTask<Map<String, String>, Integer, Integer> {
             }
         }
 
-        return null;
+        return result;
+    }
+
+    @Override
+    protected void onPostExecute(Integer integer) {
+        Log.d("code", String.valueOf(integer));
+        if(500==integer){
+            LocalBroadcastManager.getInstance(context).sendBroadcast(new Intent().setAction(DesafioApp.SESSION_EXPIRED));
+        }
     }
 
     private void increasePage() {
